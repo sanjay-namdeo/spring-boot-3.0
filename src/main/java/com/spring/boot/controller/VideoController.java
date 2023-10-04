@@ -24,4 +24,24 @@ public class VideoController {
     public ResponseEntity<List<Video>> getVideos() {
         return ResponseEntity.ok().body(this.videoService.getVideos());
     }
+
+    @GetMapping(path = "search-by-name")
+    public ResponseEntity<Video> findByName(@RequestParam() String name) {
+        final Video video = this.videoService.findByName(name);
+        if (video == null) {
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok().body(video);
+        }
+    }
+
+    @GetMapping(path = "search-by-id")
+    public ResponseEntity<Video> findById(@RequestParam() Long id) {
+        final Video video = this.videoService.findById(id);
+        if (video == null) {
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok().body(video);
+        }
+    }
 }

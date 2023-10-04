@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class VideoService {
@@ -28,5 +29,25 @@ public class VideoService {
         all.forEach(videoEntity -> videoList.add(new Video(videoEntity.getId(), videoEntity.getName())));
 
         return videoList;
+    }
+
+    public Video findByName(String name) {
+        VideoEntity byName = this.videoRepository.findByNameIgnoreCase(name);
+
+        if (byName != null) {
+            return new Video(byName.getId(), byName.getName());
+        } else {
+            return null;
+        }
+    }
+
+    public Video findById(Long id) {
+        Optional<VideoEntity> videoEntity = this.videoRepository.findById(id);
+        if (videoEntity.isPresent()) {
+            VideoEntity ve = videoEntity.get();
+            return new Video(ve.getId(), ve.getName());
+        } else {
+            return null;
+        }
     }
 }
