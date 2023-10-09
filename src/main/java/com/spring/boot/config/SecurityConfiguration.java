@@ -3,8 +3,9 @@ package com.spring.boot.config;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -28,11 +29,19 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    SecurityFilterChain defaultSecurityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.authorizeRequests().anyRequest().authenticated();
-        httpSecurity.formLogin();
-        httpSecurity.httpBasic();
-        httpSecurity.csrf(AbstractHttpConfigurer::disable);
-        return httpSecurity.build();
+    SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
+        http
+                .authorizeHttpRequests()
+                .requestMatchers("/get-videos", "/search-by-name", "/search-by-id")
+                .permitAll()
+                .requestMatchers(HttpMethod.POST, "/create-video")
+                .hasRole("ADMIN")
+                .anyRequest().denyAll()
+                .and()
+                .formLogin(Customizer.withDefaults())
+                .httpBasic(Customizer.withDefaults())
+                .csrf(csrf -> csrf.disable());
+
+        return http.build();
     }
 }

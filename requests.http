@@ -1,7 +1,6 @@
 ### Get all videos
 GET http://localhost:9090/get-videos
 Accept: application/json
-Authorization: Basic dXNlcjpwYXNzd29yZA==
 
 ### Create video
 POST http://localhost:9090/create-video
@@ -16,9 +15,7 @@ Accept: application/json
 ### Search video by name
 GET http://localhost:9090/search-by-name?name=Second%20video
 Accept: application/json
-Authorization: Basic dXNlcjpwYXNzd29yZA==
 
 ### Search video by id
 GET http://localhost:9090/search-by-id?id=1
 Accept: application/json
-Authorization: Basic dXNlcjpwYXNzd29yZA==
